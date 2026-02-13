@@ -2,14 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import InvoiceStamp from '../components/InvoiceStamp';
-import { getBookings } from '../utils/storage';
+import { getBookings, getUser } from '../utils/storage';
+
+const getRegionalAddress = (location = 'Bhimavaram') => {
+    const addresses = {
+        'Bhimavaram': 'GGRH+5H9, Bank Colony, Bhimavaram, Andhra Pradesh 534201',
+        'LPU Campus': 'Lovely professional university, BH6, Gurudwara Rd, Jalandhar, Punjab 144411',
+        'Hyderabad': '35, PJR Stadium Ln, Santhi Nagar, Chanda Nagar, Hyderabad, Telangana 500050'
+    };
+    return addresses[location] || addresses['Bhimavaram'];
+};
 
 const BillingPage = () => {
     const { bookingId } = useParams();
     const navigate = useNavigate();
     const [booking, setBooking] = useState(null);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
+        setUser(getUser());
         const bookings = getBookings();
         const found = bookings.find(b => b.id === bookingId);
         if (found) setBooking(found);
@@ -45,8 +56,8 @@ const BillingPage = () => {
                     {/* Bill To */}
                     <div style={{ marginBottom: '30px' }}>
                         <h3 style={{ fontSize: '1rem', color: '#999', textTransform: 'uppercase' }}>Bill To:</h3>
-                        <p style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Vignesh Reddy</p> {/* Mock User */}
-                        <p>123 Fake Street, Bhimavaram</p>
+                        <p style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>{user?.name || 'Vignesh Reddy'}</p>
+                        <p>{user?.address || getRegionalAddress(user?.location)}</p>
                     </div>
 
                     {/* Table */}
@@ -79,7 +90,7 @@ const BillingPage = () => {
                     </table>
 
                     {/* Stamp Position */}
-                    <div style={{ position: 'absolute', bottom: '150px', right: '100px', transform: 'rotate(-20deg)', opacity: 0.9 }}>
+                    <div style={{ position: 'absolute', bottom: '150px', right: '100px', transform: 'rotate(-20deg)', opacity: 0.6, pointerEvents: 'none' }}>
                         <InvoiceStamp />
                     </div>
 
@@ -93,8 +104,8 @@ const BillingPage = () => {
                         <button onClick={printInvoice} className="btn" style={{ background: '#333' }}>
                             Print Invoice 🖨️
                         </button>
-                        <button onClick={() => navigate('/')} className="btn" style={{ marginLeft: '12px', background: 'transparent', color: '#333', border: '1px solid #ddd' }}>
-                            Back to Home
+                        <button onClick={() => navigate(-1)} className="btn" style={{ marginLeft: '12px', background: 'transparent', color: '#333', border: '1px solid #ddd' }}>
+                            Close
                         </button>
                     </div>
                 </div>

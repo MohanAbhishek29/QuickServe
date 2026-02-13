@@ -58,19 +58,7 @@ const HomePage = () => {
                 </div>
             </div>
 
-            {activeBooking && (
-                <div className="container" style={{ marginBottom: '24px' }}>
-                    <div className="glass-card flex justify-between animate-fade-in" style={{ borderLeft: '5px solid var(--success)', background: 'rgba(240, 255, 244, 0.8)' }}>
-                        <div>
-                            <h3 style={{ color: 'var(--success)', fontSize: '1.2rem', fontWeight: 'bold' }}>Active Booking: {activeBooking.service}</h3>
-                            <p style={{ color: '#555', marginTop: '4px' }}>
-                                Helper: <b>{activeBooking.helper}</b> • ETA: <b>{activeBooking.eta}</b>
-                            </p>
-                        </div>
-                        <div className="badge">{activeBooking.status}</div>
-                    </div>
-                </div>
-            )}
+            {/* Active Booking Widget Removed as per user request */}
 
             <div className="container" style={{ textAlign: 'center', marginBottom: '60px' }}>
                 <button

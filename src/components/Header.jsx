@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUser } from '../utils/storage';
+import Logo from './Logo';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -38,25 +39,68 @@ const Header = () => {
             boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
         }}>
             <div className="container flex justify-between">
-                <div className="flex hover-scale" style={{ gap: '12px', cursor: 'pointer' }} onClick={() => navigate('/')}>
-                    <div style={{ background: 'var(--primary-gradient)', color: 'white', padding: '8px 12px', borderRadius: '12px', fontWeight: 'bold', fontSize: '1.2rem' }}>QS</div>
-                    <h1 style={{ fontSize: '1.5rem', fontWeight: '800', background: 'var(--secondary-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>QuickServe</h1>
+                <div className="flex hover-scale" style={{ gap: '12px', cursor: 'pointer', alignItems: 'center' }} onClick={() => navigate('/')}>
+                    <Logo size={48} />
+                    <h1 style={{ fontSize: '1.8rem', fontWeight: '800', background: 'var(--secondary-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-0.5px' }}>QuickServe</h1>
                 </div>
 
                 <div className="flex" style={{ gap: '24px' }}>
                     {user ? (
                         <>
-                            <div className="location-selector flex" style={{ color: '#555', background: 'rgba(0,0,0,0.05)', padding: '8px 16px', borderRadius: '50px' }}>
-                                <span style={{ marginRight: '6px' }}>📍</span>
-                                <select
-                                    value={user.location || 'Bhimavaram'}
-                                    onChange={handleLocationChange}
-                                    style={{ border: 'none', background: 'transparent', fontWeight: 'bold', cursor: 'pointer', outline: 'none', color: '#333' }}
+                            <div className="location-selector" style={{ position: 'relative' }}>
+                                <div
+                                    onClick={() => setUser({ ...user, isDropdownOpen: !user.isDropdownOpen })}
+                                    className="flex hover-scale"
+                                    style={{
+                                        color: '#333',
+                                        background: 'rgba(255,107,53,0.1)',
+                                        padding: '10px 20px',
+                                        borderRadius: '50px',
+                                        cursor: 'pointer',
+                                        border: '1px solid rgba(255,107,53,0.2)'
+                                    }}
                                 >
-                                    <option value="Bhimavaram">Bhimavaram</option>
-                                    <option value="LPU Campus">LPU Campus</option>
-                                    <option value="Hyderabad">Hyderabad</option>
-                                </select>
+                                    <span style={{ marginRight: '8px', fontSize: '1.2rem' }}>📍</span>
+                                    <span style={{ fontWeight: '700', fontFamily: 'var(--font-heading)', fontSize: '1rem' }}>
+                                        {user.location || 'Bhimavaram'}
+                                    </span>
+                                    <span style={{ marginLeft: '8px', fontSize: '0.8rem' }}>▼</span>
+                                </div>
+
+                                {user.isDropdownOpen && (
+                                    <div className="glass-card animate-fade-in" style={{
+                                        position: 'absolute',
+                                        top: '120%',
+                                        left: 0,
+                                        width: '200px',
+                                        padding: '10px',
+                                        zIndex: 1000,
+                                        background: 'rgba(255,255,255,0.95)'
+                                    }}>
+                                        {['Bhimavaram', 'LPU Campus', 'Hyderabad'].map(loc => (
+                                            <div
+                                                key={loc}
+                                                onClick={() => {
+                                                    const updatedUser = { ...user, location: loc, isDropdownOpen: false };
+                                                    setUser(updatedUser);
+                                                    localStorage.setItem('qs_user', JSON.stringify(updatedUser));
+                                                    window.location.reload();
+                                                }}
+                                                className="suggestion-item"
+                                                style={{
+                                                    padding: '12px 16px',
+                                                    borderRadius: '8px',
+                                                    cursor: 'pointer',
+                                                    fontWeight: '600',
+                                                    color: user.location === loc ? 'var(--primary)' : '#333',
+                                                    background: user.location === loc ? 'rgba(255,107,53,0.1)' : 'transparent'
+                                                }}
+                                            >
+                                                {loc}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="flex" style={{ gap: '16px' }}>
@@ -79,6 +123,9 @@ const Header = () => {
                             Login / Register
                         </button>
                     )}
+                    <span onClick={() => navigate('/partner/login')} style={{ fontSize: '0.8rem', color: '#999', cursor: 'pointer', alignSelf: 'center', textDecoration: 'underline' }}>
+                        Partner Access
+                    </span>
                 </div>
             </div>
         </header>

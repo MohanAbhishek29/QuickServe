@@ -17,23 +17,27 @@ const ServicesListPage = () => {
                     </button>
                 </div>
 
-                <div className="grid grid-cols-4" style={{ gap: '24px' }}>
+                <div className="responsive-grid-3">
                     {SERVICES_LIST.map(service => (
                         <div
                             key={service.id}
                             className="glass-card flex hover-scale"
                             style={{
-                                flexDirection: 'column',
-                                padding: '32px',
+                                flexDirection: 'row',
+                                padding: '24px',
                                 alignItems: 'center',
                                 cursor: 'pointer',
-                                textAlign: 'center',
-                                background: 'rgba(255,255,255,0.6)'
+                                textAlign: 'left',
+                                background: 'rgba(255,255,255,0.6)',
+                                gap: '24px'
                             }}
                             onClick={() => navigate(`/service/${service.name}`)}
                         >
-                            <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>{service.icon}</div>
-                            <h3 style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>{service.name}</h3>
+                            <div style={{ fontSize: '3rem', background: 'rgba(255,255,255,0.5)', borderRadius: '12px', padding: '12px' }}>{service.icon}</div>
+                            <div>
+                                <h3 style={{ fontWeight: 'bold', fontSize: '1.4rem' }}>{service.name}</h3>
+                                <p style={{ color: '#666', fontSize: '0.9rem' }}>Book Now ➔</p>
+                            </div>
                         </div>
                     ))}
                 </div>

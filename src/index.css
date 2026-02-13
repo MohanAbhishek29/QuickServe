@@ -8,7 +8,9 @@
   --glass-border: 1px solid rgba(255, 255, 255, 0.5);
   --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   --radius: 16px;
-  --font-main: 'Inter', system-ui, sans-serif;
+  --success: #00C851;
+  --font-main: 'Poppins', sans-serif;
+  --font-heading: 'Playfair Display', serif;
 }
 
 * {
@@ -22,6 +24,25 @@ body {
   background: var(--bg-gradient);
   min-height: 100vh;
   color: #1A1A1A;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.btn,
+.badge {
+  font-family: var(--font-heading);
+  letter-spacing: -0.5px;
+}
+
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
 }
 
 .container {
@@ -57,6 +78,17 @@ body {
   box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
 }
 
+.badge {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--secondary);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
 /* Animations */
 @keyframes float {
   0% {
@@ -84,8 +116,24 @@ body {
   }
 }
 
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 .hover-scale {
@@ -96,13 +144,50 @@ body {
   transform: scale(1.05);
 }
 
+.suggestion-item {
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background: #f5f7fa !important;
+}
+
 .grid {
   display: grid;
   gap: 24px;
 }
 
-.grid-cols-4 {
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+.responsive-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.responsive-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 24px;
+}
+
+@media (min-width: 640px) {
+  .responsive-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .responsive-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .responsive-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .flex {

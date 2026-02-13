@@ -37,13 +37,25 @@ const BookingHistory = () => {
                                     <div style={{ color: '#666', fontSize: '0.9rem' }}>
                                         <span>ID: <strong>{booking.id}</strong></span> •
                                         <span> Helper: {booking.helper}</span>
+                                        {booking.eta && (
+                                            <span style={{ marginLeft: '8px', background: '#e3f2fd', color: '#1976d2', padding: '2px 8px', borderRadius: '4px', fontSize: '0.8rem' }}>
+                                                Expected: {booking.eta}
+                                            </span>
+                                        )}
                                     </div>
                                     <div style={{ fontSize: '0.8rem', color: '#999', marginTop: '4px' }}>
-                                        {new Date(booking.timestamp).toLocaleString()}
+                                        Booked on: {new Date(booking.timestamp).toLocaleString()}
                                     </div>
                                 </div>
                                 <div style={{ textAlign: 'right' }}>
-                                    <div className="badge" style={{ display: 'inline-block', marginBottom: '8px' }}>{booking.status}</div>
+                                    <div className="badge" style={{
+                                        display: 'inline-block',
+                                        marginBottom: '8px',
+                                        background: booking.status === 'Accepted' ? '#d4edda' : booking.status === 'Completed' ? '#cce5ff' : 'rgba(255,255,255,0.8)',
+                                        color: booking.status === 'Accepted' ? '#155724' : booking.status === 'Completed' ? '#004085' : 'inherit'
+                                    }}>
+                                        {booking.status === 'Accepted' ? 'Partner Accepted' : booking.status}
+                                    </div>
                                     <br />
                                     <button
                                         onClick={() => navigate(`/billing/${booking.id}`)}

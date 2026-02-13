@@ -16,18 +16,88 @@ const CompanyPage = () => {
 
     // Get employees based on region (simulated, as employees are usually per company, 
     // but for this mock we use region-based names as requested)
+    // Get employees based on region and service category
     const user = getUser();
     const loc = user ? user.location : 'Bhimavaram';
-    const employeeNames = EMPLOYEES[loc] || EMPLOYEES['Bhimavaram'];
+
+    // Determine the category key based on the service type
+    let categoryKey = 'Technical'; // Default fallback
+    if (['Cleaning', 'Maid'].includes(serviceType)) categoryKey = 'Cleaning';
+    else if (['Cooking', 'Chef'].includes(serviceType)) categoryKey = 'Cooking';
+    else if (['Salon', 'Barber', 'Makeup'].includes(serviceType)) categoryKey = 'Salon';
+
+    // Get the specific pool for this region and category
+    const regionData = EMPLOYEES[loc] || EMPLOYEES['Bhimavaram'];
+    const employeeNames = regionData[categoryKey] || regionData['Technical'];
+
+    // Helper to generate a number from string (deterministic random)
+    const getHash = (str) => {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // Convert to 32bit integer
+        }
+        return Math.abs(hash);
+    };
+
+    const companyHash = getHash(companyName + id);
+
+    // Select a random subset of 12 employees based on the company hash
+    const subsetSize = 12;
+    const startIndex = companyHash % Math.max(1, employeeNames.length - subsetSize);
+
+    // Create a deterministic shuffled version of the list for this company
+    // (Simple slice for now, but starting at different indices)
+    let selectedNames = [...employeeNames];
+
+    // Fisher-Yates shuffle seeded by companyHash (simplified)
+    for (let i = selectedNames.length - 1; i > 0; i--) {
+        const j = (companyHash * (i + 1)) % (i + 1);
+        [selectedNames[i], selectedNames[j]] = [selectedNames[j], selectedNames[i]];
+    }
+
+    selectedNames = selectedNames.slice(0, subsetSize);
+
+    // Helper to determine gender from name (Specific to this Mock Data)
+    const getGender = (name, category) => {
+        // Known exceptions in Technical/Movers categories
+        const femaleTechNames = ['Preeti', 'Sita', 'Lakshmi', 'Anjali', 'Kalyani', 'Jyothi', 'Ramya', 'Bhavani', 'Durga', 'Sravani', 'Meena', 'Rani', 'Swapna', 'Deepa', 'Sandhya', 'Lavanya'];
+
+        if (['Cleaning', 'Cooking', 'Salon'].includes(category)) return 'F';
+
+        // For Technical/Movers, assume Male unless in known list
+        if (femaleTechNames.some(f => name.includes(f))) return 'F';
+
+        return 'M';
+    };
+
+    // Helper to get avatar based on Category + Gender
+    const getAvatar = (category, gender) => {
+        const avatars = {
+            Cleaning: { F: '👩‍🧹', M: '👨‍🧹' },
+            Cooking: { F: '👩‍🍳', M: '👨‍🍳' },
+            Salon: { F: '💇‍♀️', M: '💇‍♂️' },
+            Technical: { F: '👩‍🔧', M: '👨‍🔧' }
+        };
+        const type = avatars[category] || avatars['Technical'];
+        return type[gender];
+    };
 
     // Generate mock employee objects
-    const employees = employeeNames.map((name, index) => ({
-        id: `${id}_emp_${index}`,
-        name: name,
-        rating: (4 + Math.random()).toFixed(1),
-        price: 400 + Math.floor(Math.random() * 200),
-        avatar: ['👨‍🔧', '👩‍🔧', '👨‍🏭'][index % 3]
-    }));
+    const employees = selectedNames.map((name, index) => {
+        // Deterministic ratings/prices based on name + company
+        const empHash = getHash(name + companyName);
+        const gender = getGender(name, categoryKey);
+
+        return {
+            id: `${id}_emp_${index}`,
+            name: name,
+            rating: (3.8 + (empHash % 13) / 10).toFixed(1), // Random rating 3.8 - 5.0
+            price: 300 + (empHash % 40) * 10, // Random price 300 - 700
+            avatar: getAvatar(categoryKey, gender)
+        };
+    });
 
     const handleBook = (employee) => {
         setSelectedEmployee({ ...employee, service: serviceType, company: companyName });
@@ -47,7 +117,7 @@ const CompanyPage = () => {
                     </button>
                 </div>
 
-                <div className="grid grid-cols-4" style={{ gap: '24px' }}>
+                <div className="responsive-grid-4">
                     {employees.map(emp => (
                         <div key={emp.id} className="glass-card flex hover-scale" style={{ flexDirection: 'column', padding: '24px', alignItems: 'center' }}>
                             <div style={{ fontSize: '3rem', marginBottom: '12px' }}>{emp.avatar}</div>

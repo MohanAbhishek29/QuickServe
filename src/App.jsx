@@ -8,6 +8,8 @@ import BillingPage from './pages/BillingPage';
 import BookingHistory from './pages/BookingHistory';
 import CompanyPage from './pages/CompanyPage';
 import ServicesListPage from './pages/ServicesListPage';
+import PartnerLogin from './pages/PartnerLogin';
+import PartnerDashboard from './pages/PartnerDashboard';
 import './index.css';
 
 function App() {
@@ -20,8 +22,10 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/services" element={<ServicesListPage />} />
         <Route path="/service/:type" element={<ServicePage />} />
-        <Route path="/company/:id" element={<CompanyPage />} />
         <Route path="/billing/:bookingId" element={<BillingPage />} />
+        <Route path="/company/:id" element={<CompanyPage />} />
+        <Route path="/partner/login" element={<PartnerLogin />} />
+        <Route path="/partner/dashboard" element={<PartnerDashboard />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
