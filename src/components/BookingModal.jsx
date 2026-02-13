@@ -54,7 +54,8 @@ const BookingModal = ({ service, onClose, preSelectedHelper }) => {
             address: userAddress,
             eta: eta,
             status: 'Confirmed', // Initial status
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            price: helper.price || 500 // Save price (fallback to 500 if missing)
         });
     };
 

@@ -5,11 +5,11 @@
 
 // Mock list of helpers with their coordinates (relative to a center point)
 const MOCK_HELPERS = [
-    { id: 1, name: "Cleaning Pro (Ramu)", service: "Cleaning", lat: 0.005, lng: 0.005, rating: 4.8 }, // ~700m away
-    { id: 2, name: "Fix-It Somu", service: "Plumbing", lat: -0.01, lng: 0.002, rating: 4.5 }, // ~1.2km away
-    { id: 3, name: "Sparky Tech", service: "Electrician", lat: 0.001, lng: -0.008, rating: 4.9 }, // ~900m away
-    { id: 4, name: "Pest Expert", service: "Pest Control", lat: 0.015, lng: 0.015, rating: 4.7 }, // ~2.5km (Might be too far)
-    { id: 5, name: "Fast Clean", service: "Cleaning", lat: -0.003, lng: -0.003, rating: 4.6 }, // ~500m away
+    { id: 1, name: "Cleaning Pro (Ramu)", service: "Cleaning", lat: 0.005, lng: 0.005, rating: 4.8, price: 450 }, // ~700m away
+    { id: 2, name: "Fix-It Somu", service: "Plumbing", lat: -0.01, lng: 0.002, rating: 4.5, price: 600 }, // ~1.2km away
+    { id: 3, name: "Sparky Tech", service: "Electrician", lat: 0.001, lng: -0.008, rating: 4.9, price: 550 }, // ~900m away
+    { id: 4, name: "Pest Expert", service: "Pest Control", lat: 0.015, lng: 0.015, rating: 4.7, price: 800 }, // ~2.5km (Might be too far)
+    { id: 5, name: "Fast Clean", service: "Cleaning", lat: -0.003, lng: -0.003, rating: 4.6, price: 400 }, // ~500m away
 ];
 
 /**

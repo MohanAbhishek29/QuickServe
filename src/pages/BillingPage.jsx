@@ -32,6 +32,10 @@ const BillingPage = () => {
         window.print();
     };
 
+    const amount = booking.price || 500;
+    const platformFee = Math.round(amount * 0.10); // 10% Fee
+    const total = amount + platformFee;
+
     return (
         <div style={{ background: '#eee', minHeight: '100vh', paddingBottom: '40px' }}>
             <Header />
@@ -74,17 +78,17 @@ const BillingPage = () => {
                                     <strong>{booking.service} Service</strong><br />
                                     <span style={{ fontSize: '0.9rem', color: '#666' }}>Helper: {booking.helper}</span>
                                 </td>
-                                <td style={{ padding: '12px', borderBottom: '1px solid #eee', textAlign: 'right' }}>₹500.00</td>
+                                <td style={{ padding: '12px', borderBottom: '1px solid #eee', textAlign: 'right' }}>₹{amount.toFixed(2)}</td>
                             </tr>
                             <tr>
-                                <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>Platform Fee</td>
-                                <td style={{ padding: '12px', borderBottom: '1px solid #eee', textAlign: 'right' }}>₹50.00</td>
+                                <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>Platform Fee (10%)</td>
+                                <td style={{ padding: '12px', borderBottom: '1px solid #eee', textAlign: 'right' }}>₹{platformFee.toFixed(2)}</td>
                             </tr>
                         </tbody>
                         <tfoot>
                             <tr>
                                 <td style={{ padding: '12px', fontWeight: 'bold' }}>TOTAL</td>
-                                <td style={{ padding: '12px', fontWeight: 'bold', textAlign: 'right', fontSize: '1.2rem' }}>₹550.00</td>
+                                <td style={{ padding: '12px', fontWeight: 'bold', textAlign: 'right', fontSize: '1.2rem' }}>₹{total.toFixed(2)}</td>
                             </tr>
                         </tfoot>
                     </table>

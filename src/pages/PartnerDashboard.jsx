@@ -53,7 +53,7 @@ const PartnerDashboard = () => {
 
     const activeJobs = bookings.filter(b => b.status !== 'Completed');
     const completedJobs = bookings.filter(b => b.status === 'Completed');
-    const totalEarnings = completedJobs.length * 500; // Mock calculation
+    const totalEarnings = completedJobs.reduce((sum, job) => sum + (job.price || 500), 0);
 
     return (
         <div style={{ minHeight: '100vh', background: '#f5f7fa' }}>
@@ -170,7 +170,7 @@ const PartnerDashboard = () => {
                                 <div key={job.id} style={{ background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #eee', opacity: 0.8 }}>
                                     <div className="flex justify-between">
                                         <span style={{ fontWeight: 'bold', color: '#333' }}>{job.service}</span>
-                                        <span style={{ color: '#00C851', fontWeight: 'bold' }}>₹500</span>
+                                        <span style={{ color: '#00C851', fontWeight: 'bold' }}>₹{job.price || 500}</span>
                                     </div>
                                     <div style={{ fontSize: '0.8rem', color: '#999', marginTop: '4px' }}>
                                         {new Date(job.timestamp).toLocaleDateString()} • ID: {job.id}
